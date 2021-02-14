@@ -13,7 +13,7 @@ export const validateRegisterInput = (
   }
 
   if (email.trim() === "") {
-    errors.username = "Email must not be empty";
+    errors.email = "Email must not be empty";
   } else {
     const regEx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -26,6 +26,22 @@ export const validateRegisterInput = (
     errors.password = "Password must contain at least 8 characters";
   } else if (password !== confirmPassword) {
     errors.confirmPassword = "Password do not match";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
+export const validateLoginInput = (username, password) => {
+  const errors = {};
+  if (username.trim() === "") {
+    errors.username = "Username must not be empty";
+  }
+
+  if (password.trim() === "") {
+    errors.password = "Password must not be empty";
   }
 
   return {

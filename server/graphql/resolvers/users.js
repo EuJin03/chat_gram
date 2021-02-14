@@ -3,10 +3,44 @@ import { UserInputError } from "apollo-server";
 
 import User from "../../model/User.js";
 import generateToken from "../../utils/generateToken.js";
-import { validateRegisterInput } from "../../utils/validators.js";
+import {
+  validateRegisterInput,
+  validateLoginInput,
+} from "../../utils/validators.js";
 
 export default {
   Mutation: {
+    login: async (_, { username, password }, context, info) => {
+      const { errors, valid } = validateLoginInput(username, password);
+
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
+      }
+
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        errors.general = "User not found";
+        throw new UserInputError("User not found", { errors });
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+
+      if (!match) {
+        errors.general = "Username or password is incorrect";
+        throw new UserInputError("Username or password is incorrect", {
+          errors,
+        });
+      }
+
+      const token = generateToken(user);
+
+      return {
+        ...user._doc,
+        id: user._id,
+        token,
+      };
+    },
     register: async (
       _,
       { registerInput: { username, email, password, confirmPassword } },
@@ -55,7 +89,7 @@ export default {
 
       const res = await newUser.save();
 
-      const token = generateToken(res.id, res.email, res.username);
+      const token = generateToken(res);
 
       return {
         ...res._doc,
