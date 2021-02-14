@@ -27,3 +27,8 @@
 .ui.divided.grid:not([class*="vertically divided"]) > .row > .column {
   box-shadow: none !important;
 }
+
+.ui.teal.button:focus,
+.ui.teal.buttons > .button:focus {
+  background-color: #00b5ad;
+}
