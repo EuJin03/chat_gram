@@ -5,7 +5,6 @@ import commentResolvers from "./comments.js";
 export default {
   Post: {
     likeCount: parent => {
-      console.log(parent);
       return parent.likes.length;
     },
     commentCount: parent => parent.comments.length,

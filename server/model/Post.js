@@ -36,6 +36,10 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    gender: {
+      type: String,
+      required: true,
+    },
     comments: [commentSchema],
     likes: [likeSchema],
     user: {

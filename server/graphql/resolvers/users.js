@@ -43,7 +43,7 @@ export default {
     },
     register: async (
       _,
-      { registerInput: { username, email, password, confirmPassword } },
+      { registerInput: { username, email, gender, password, confirmPassword } },
       context,
       info
     ) => {
@@ -51,6 +51,7 @@ export default {
       const { valid, errors } = validateRegisterInput(
         username,
         email,
+        gender,
         password,
         confirmPassword
       );
@@ -84,6 +85,7 @@ export default {
       const newUser = new User({
         email,
         username,
+        gender,
         password,
       });
 

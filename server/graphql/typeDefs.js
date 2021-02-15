@@ -10,6 +10,7 @@ export const typeDefs = gql`
     likes: [Like]!
     likeCount: Int!
     commentCount: Int!
+    gender: String
   }
   type Comment {
     id: ID!
@@ -27,12 +28,14 @@ export const typeDefs = gql`
     email: String!
     token: String!
     username: String!
+    gender: String!
     createdAt: String!
   }
   input RegisterInput {
     username: String!
     email: String!
     password: String!
+    gender: String!
     confirmPassword: String!
   }
   type Query {

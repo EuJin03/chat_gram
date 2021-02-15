@@ -30,6 +30,8 @@ export default {
     createPost: async (_, { body }, context) => {
       const user = protect(context);
 
+      console.log(user);
+
       if (body.trim() === "") {
         throw new Error("Post body must not be empty");
       }
@@ -38,6 +40,7 @@ export default {
         body,
         user: user.id,
         username: user.username,
+        gender: user.gender,
       });
 
       const post = await newPost.save();
@@ -51,7 +54,6 @@ export default {
 
     deletePost: async (_, { postId }, context) => {
       const user = protect(context);
-      console.log(context);
 
       try {
         const post = await Post.findById(postId);

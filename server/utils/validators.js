@@ -3,6 +3,7 @@ import { addErrorLoggingToSchema } from "apollo-server";
 export const validateRegisterInput = (
   username,
   email,
+  gender,
   password,
   confirmPassword
 ) => {
@@ -20,6 +21,10 @@ export const validateRegisterInput = (
     if (!email.match(regEx)) {
       errors.email = "Email must be a valid email address";
     }
+  }
+
+  if (gender.trim() === "") {
+    errors.gender = "Gender must not be empty";
   }
 
   if (password === "" || password.length < 8) {
