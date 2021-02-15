@@ -73,7 +73,9 @@ const SinglePost = ({ match, history }) => {
             <Card fluid>
               <Card.Content>
                 <Card.Header>{username}</Card.Header>
-                <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
+                <Card.Meta>
+                  {moment(new Date(parseInt(createdAt))).fromNow()}
+                </Card.Meta>
                 <Card.Description>{body}</Card.Description>
               </Card.Content>
               <hr />
@@ -132,7 +134,9 @@ const SinglePost = ({ match, history }) => {
                     <DeleteButton postId={id} commentId={comment.id} />
                   )}
                   <Card.Header>{comment.username}</Card.Header>
-                  <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
+                  <Card.Meta>
+                    {moment(new Date(parseInt(comment.createdAt))).fromNow()}
+                  </Card.Meta>
                   <Card.Description>{comment.body}</Card.Description>
                 </Card.Content>
               </Card>

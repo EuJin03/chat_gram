@@ -1,29 +1,39 @@
 import React, { useContext } from "react";
-import { Card, Button, Image, Icon, Label } from "semantic-ui-react";
+import { Card, Button, Image, Icon, Label, Popup } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
 import { AuthContext } from "../context/auth";
 import LikeButton from "./LikeButton";
+import DeleteButton from "./DeleteButton";
 
 const PostCard = ({
-  post: { body, createdAt, id, username, likeCount, commentCount, likes },
+  post: {
+    body,
+    createdAt,
+    id,
+    username,
+    likeCount,
+    commentCount,
+    likes,
+    gender,
+  },
 }) => {
   const { user } = useContext(AuthContext);
-  const likePost = () => {
-    console.log("liked post");
-  };
 
-  const commentPost = () => {
-    console.log("comment post");
-  };
+  console.log(likes);
+
   return (
     <Card className="card">
       <Card.Content>
         <Image
           floated="right"
           size="mini"
-          src="https://react.semantic-ui.com/images/avatar/large/molly.png"
+          src={
+            gender === "male"
+              ? "https://react.semantic-ui.com/images/avatar/large/daniel.jpg"
+              : "https://react.semantic-ui.com/images/avatar/large/molly.png"
+          }
         />
         <Card.Header>{username}</Card.Header>
         <Card.Meta as={Link} to={`/posts/${id}`}>
@@ -42,17 +52,7 @@ const PostCard = ({
             {commentCount}
           </Label>
         </Button>
-        {user && user.username === username && (
-          <Button
-            as="div"
-            color="red"
-            floated="right"
-            size="mini"
-            onClick={() => console.log("deletePost")}
-          >
-            <Icon name="trash" style={{ margin: "auto" }} />
-          </Button>
-        )}
+        {user && user.username === username && <DeleteButton postId={id} />}
       </Card.Content>
     </Card>
   );

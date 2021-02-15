@@ -5,16 +5,25 @@ import { gql, useMutation } from "@apollo/client";
 import { AuthContext } from "../context/auth";
 import { useForm } from "../utils/hooks.js";
 
+const options = [
+  { key: "m", text: "Male", value: "male" },
+  { key: "f", text: "Female", value: "female" },
+];
+
 const Register = ({ history }) => {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
-  const { valueHandler, formHandler, values } = useForm(registerUser, {
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const { valueHandler, genderHandler, formHandler, values } = useForm(
+    registerUser,
+    {
+      username: "",
+      email: "",
+      gender: "",
+      password: "",
+      confirmPassword: "",
+    }
+  );
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_proxy, result) {
@@ -22,7 +31,7 @@ const Register = ({ history }) => {
       context.login(result.data.register.userData);
     },
     onError(err) {
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setErrors(err.graphQLErrors[0]?.extensions.exception.errors);
     },
     variables: values,
   });
@@ -55,6 +64,15 @@ const Register = ({ history }) => {
           error={errors.email ? true : false}
           onChange={valueHandler}
         />
+        <Form.Select
+          fluid
+          label="Gender"
+          options={options}
+          onChange={genderHandler}
+          error={errors.gender ? true : false}
+          placeholder="Gender"
+        />
+
         <Form.Input
           label="Password"
           placeholder="Password"
@@ -94,6 +112,7 @@ const REGISTER_USER = gql`
   mutation register(
     $username: String!
     $email: String!
+    $gender: String!
     $password: String!
     $confirmPassword: String!
   ) {
@@ -101,6 +120,7 @@ const REGISTER_USER = gql`
       registerInput: {
         username: $username
         email: $email
+        gender: $gender
         password: $password
         confirmPassword: $confirmPassword
       }
@@ -108,6 +128,7 @@ const REGISTER_USER = gql`
       id
       email
       username
+      gender
       createdAt
       token
     }

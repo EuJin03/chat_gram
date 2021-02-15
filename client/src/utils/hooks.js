@@ -9,6 +9,13 @@ export const useForm = (callback, initialState = {}) => {
     setValues({ ...values, [name]: value });
   };
 
+  const genderHandler = e => {
+    const g = e.target.firstChild.innerText;
+
+    setValues({ ...values, gender: g.toLowerCase() });
+  };
+
+  console.log(values);
   const formHandler = e => {
     e.preventDefault();
     callback();
@@ -16,6 +23,7 @@ export const useForm = (callback, initialState = {}) => {
 
   return {
     valueHandler,
+    genderHandler,
     formHandler,
     values,
   };

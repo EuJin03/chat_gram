@@ -77,6 +77,7 @@ const LOGIN_USER = gql`
     login(username: $username, password: $password) {
       id
       email
+      gender
       username
       createdAt
       token

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
-import { Button, Label, Icon } from "semantic-ui-react";
+import { Button, Label, Icon, Popup, Divider } from "semantic-ui-react";
 
 import MyPopup from "../utils/MyPopup";
 
-function LikeButton({ user, post: { id, likeCount, likes } }) {
+const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
@@ -36,13 +36,29 @@ function LikeButton({ user, post: { id, likeCount, likes } }) {
 
   return (
     <Button as="div" labelPosition="right" onClick={likePost}>
-      <MyPopup content={liked ? "Unlike" : "Like"}>{likeButton}</MyPopup>
+      <MyPopup
+        content={
+          likes.length > 0 ? (
+            <div className="like__div">
+              {likes.map((like, index) => (
+                <>
+                  <p key={index}>{like.username}</p>
+                </>
+              ))}
+            </div>
+          ) : (
+            <p className="like__p">Give a like!</p>
+          )
+        }
+      >
+        {likeButton}
+      </MyPopup>
       <Label basic color="teal" pointing="left" size="mini">
         {likeCount}
       </Label>
     </Button>
   );
-}
+};
 
 const LIKE_POST_MUTATION = gql`
   mutation likePost($postId: ID!) {
